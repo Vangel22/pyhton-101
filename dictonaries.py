@@ -57,8 +57,11 @@ print(sorted(people1.items()))
 
 # method 3 : unpacking - after version 3.5
 people2 = {**python, **holy_grail, **life_of_brian}
-# print(people2)  # this one has a different sort
+print(people2)  # this one has a different sort
 
 print(sorted(people2.items()))
-print('The sum of the ages: ', sum(people.values))
+# print('The sum of the ages: ', sum(people.values))
 # if one of the people.values is a string sum(people.values) is going to crash
+
+# ** is used for dictionaries
+# We can use * to unpack the list so that all elements of it can be passed as different parameters.

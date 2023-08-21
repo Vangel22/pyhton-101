@@ -1,23 +1,21 @@
-from http.server import BaseHTTPRequestHandler, HTTPServer
+import requests
 
 
-class GetHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header('Content-type', 'text/plain')
-        self.end_headers()
-        self.wfile.write(b'This is a GET request response.')
+def get_json_data(url):
+    response = requests.get(url)
 
-
-def run_server():
-    server_address = ('', 3000)
-    httpd = HTTPServer(server_address, GetHandler)
-    print('Server is running on port 3000')
-    httpd.serve_forever()
+    if response.status_code == 200:
+        json_data = response.json()
+        return json_data
+    else:
+        print(f"Failed to retrieve data. Status code: {response.status_code}")
+        return None
 
 
 if __name__ == '__main__':
-    run_server()
+    api_url = 'https://jsonplaceholder.typicode.com/posts/1'
+    json_data = get_json_data(api_url)
 
-# if __name__ == "__main__": block ensures that the run_server() function is only called
-# when the script is run directly (not when it's imported as a module).
+    if json_data:
+        print("Received JSON data:")
+        print(json_data)

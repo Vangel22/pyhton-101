@@ -1,21 +1,34 @@
-import requests
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
 
 
-def get_json_data(url):
-    response = requests.get(url)
-
-    if response.status_code == 200:
-        json_data = response.json()
-        return json_data
-    else:
-        print(f"Failed to retrieve data. Status code: {response.status_code}")
-        return None
+@app.route('/')  # decorator
+def home():
+    return 'Home!'
 
 
-if __name__ == '__main__':
-    api_url = 'https://jsonplaceholder.typicode.com/posts/1'
-    json_data = get_json_data(api_url)
+@app.route('/get-user/<user_id>')
+def get_user(user_id):
+    user_data = {
+        'user_id': user_id,
+        'name': 'John Doe',
+        'email': 'john@doe.com'
+    }
+    query = request.args.get('query')
+    if query:
+        user_data['query'] = query
 
-    if json_data:
-        print("Received JSON data:")
-        print(json_data)
+    return jsonify(user_data), 200
+
+
+# methods can have more http methods
+@app.route('/create-user', methods=["POST"])
+def create_user():
+    # if(request.method == "POST") check from the array
+    data = request.get_json()
+    return jsonify(data), 201
+
+
+if __name__ == "__main__":
+    app.run(port=8000, debug=True)
